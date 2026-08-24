@@ -5,3 +5,8 @@ description = "A local AI running coach using Ollama and WhatsApp."
 requires-python = ">=3.12"
 
 dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest"
+]
