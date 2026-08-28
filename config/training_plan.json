@@ -43,6 +43,314 @@
           "optional": true
         }
       ]
+    },
+    {
+      "week": 2,
+      "sessions": [
+        {
+          "session_number": 1,
+          "description": "30–35 Minuten, 5 Minuten laufen / 1 Minute gehen",
+          "target_duration_min_minutes": 30,
+          "target_duration_max_minutes": 35,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": 5,
+          "walk_interval_minutes": 1,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 2,
+          "description": "5–5,5 km locker",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": 5.0,
+          "target_distance_max_km": 5.5,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 3,
+          "description": "30 Minuten locker",
+          "target_duration_min_minutes": 30,
+          "target_duration_max_minutes": 30,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "sessions": [
+        {
+          "session_number": 1,
+          "description": "35 Minuten, 7 Minuten laufen / 1 Minute gehen",
+          "target_duration_min_minutes": 35,
+          "target_duration_max_minutes": 35,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": 7,
+          "walk_interval_minutes": 1,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 2,
+          "description": "5,5–6 km locker",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": 5.5,
+          "target_distance_max_km": 6.0,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 3,
+          "description": "25–30 Minuten locker",
+          "target_duration_min_minutes": 25,
+          "target_duration_max_minutes": 30,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "sessions": [
+        {
+          "session_number": 1,
+          "description": "30 Minuten locker, Erholungswoche",
+          "target_duration_min_minutes": 30,
+          "target_duration_max_minutes": 30,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 2,
+          "description": "5–5,5 km locker",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": 5.0,
+          "target_distance_max_km": 5.5,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 3,
+          "description": "25 Minuten locker, nur wenn du dich frisch fühlst",
+          "target_duration_min_minutes": 25,
+          "target_duration_max_minutes": 25,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "sessions": [
+        {
+          "session_number": 1,
+          "description": "35–40 Minuten locker",
+          "target_duration_min_minutes": 35,
+          "target_duration_max_minutes": 40,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 2,
+          "description": "6 km locker",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": 6.0,
+          "target_distance_max_km": 6.0,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 3,
+          "description": "10 Minuten locker + 3 × (2 Minuten schneller / 3 Minuten locker)",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": null,
+          "target_effort_max": null,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "sessions": [
+        {
+          "session_number": 1,
+          "description": "35–40 Minuten locker",
+          "target_duration_min_minutes": 35,
+          "target_duration_max_minutes": 40,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 2,
+          "description": "6–6,5 km locker",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": 6.0,
+          "target_distance_max_km": 6.5,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 3,
+          "description": "10 Minuten locker + 4 × (2 Minuten schneller / 3 Minuten locker)",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": null,
+          "target_effort_max": null,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "sessions": [
+        {
+          "session_number": 1,
+          "description": "40 Minuten locker",
+          "target_duration_min_minutes": 40,
+          "target_duration_max_minutes": 40,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 2,
+          "description": "6,5–7 km locker",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": 6.5,
+          "target_distance_max_km": 7.0,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 3,
+          "description": "30 Minuten locker mit 3 × 3 Minuten etwas schneller",
+          "target_duration_min_minutes": 30,
+          "target_duration_max_minutes": 30,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": null,
+          "target_effort_max": null,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "sessions": [
+        {
+          "session_number": 1,
+          "description": "30 Minuten sehr locker",
+          "target_duration_min_minutes": 30,
+          "target_duration_max_minutes": 30,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 2,
+          "description": "5-km-Testlauf, kontrolliert und gleichmäßig, kein Sprint",
+          "target_duration_min_minutes": null,
+          "target_duration_max_minutes": null,
+          "target_distance_min_km": 5.0,
+          "target_distance_max_km": 5.0,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": null,
+          "target_effort_max": null,
+          "optional": false
+        },
+        {
+          "session_number": 3,
+          "description": "25 Minuten sehr locker, früh in der Woche",
+          "target_duration_min_minutes": 25,
+          "target_duration_max_minutes": 25,
+          "target_distance_min_km": null,
+          "target_distance_max_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": true
+        }
+      ]
     }
   ]
 }
