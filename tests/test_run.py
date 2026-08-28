@@ -25,6 +25,14 @@ def test_calculate_pace() -> None:
 
     assert run.pace_minutes_per_km == 8.0
 
+def test_calculate_rounded_pace() -> None:
+    run = Run(
+        distance_km=6.0,
+        duration_minutes=43.0,
+        perceived_effort=4,
+    )
+
+    assert run.pace_minutes_per_km == 7.17
 
 def test_walk_breaks_are_optional() -> None:
     run = Run(
@@ -165,4 +173,64 @@ def test_intervals_must_be_positive(
             walk_breaks=5,
             run_interval_minutes=run_interval,
             walk_interval_minutes=walk_interval,
+        )
+
+def test_heart_rate_is_optional() -> None:
+    run = Run(
+        distance_km=5.0,
+        duration_minutes=40.0,
+        perceived_effort=4,
+    )
+
+    assert run.average_heart_rate is None
+    assert run.max_heart_rate is None
+
+
+def test_valid_heart_rate_values() -> None:
+    run = Run(
+        distance_km=5.0,
+        duration_minutes=40.0,
+        perceived_effort=4,
+        average_heart_rate=145,
+        max_heart_rate=172,
+    )
+
+    assert run.average_heart_rate == 145
+    assert run.max_heart_rate == 172
+
+
+@pytest.mark.parametrize("average_heart_freq", [0, -1])
+def test_average_heart_freq_must_be_positive(
+    average_heart_freq: int,
+) -> None:
+    with pytest.raises(ValueError):
+        Run(
+            distance_km=5.0,
+            duration_minutes=40.0,
+            perceived_effort=4,
+            average_heart_rate=average_heart_freq,
+        )
+
+
+@pytest.mark.parametrize("max_heart_freq", [0, -1])
+def test_max_heart_freq_must_be_positive(
+    max_heart_freq: int,
+) -> None:
+    with pytest.raises(ValueError):
+        Run(
+            distance_km=5.0,
+            duration_minutes=40.0,
+            perceived_effort=4,
+            max_heart_rate=max_heart_freq,
+        )
+
+
+def test_average_heart_freq_cannot_exceed_max_heart_freq() -> None:
+    with pytest.raises(ValueError):
+        Run(
+            distance_km=5.0,
+            duration_minutes=40.0,
+            perceived_effort=4,
+            average_heart_rate=180,
+            max_heart_rate=170,
         )
