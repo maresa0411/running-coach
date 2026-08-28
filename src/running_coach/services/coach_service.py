@@ -35,8 +35,10 @@ Geplante Trainingseinheit:
 - Woche: {training_session.week}
 - Einheit: {training_session.session_number}
 - Beschreibung: {training_session.description}
-- Zieldauer: {training_session.target_duration_minutes} Minuten
-- Zieldistanz: {training_session.target_distance_km} km
+- Zieldauer Minimum: {training_session.target_duration_min_minutes} Minuten
+- Zieldauer Maximum: {training_session.target_duration_max_minutes} Minuten
+- Zieldistanz Minimum: {training_session.target_distance_min_km} km
+- Zieldistanz Maximum: {training_session.target_distance_max_km} km
 - Laufintervall: {training_session.run_interval_minutes} Minuten
 - Gehintervall: {training_session.walk_interval_minutes} Minuten
 - Zielbelastung: {training_session.target_effort_min}-{training_session.target_effort_max}/10

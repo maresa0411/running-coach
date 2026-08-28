@@ -8,7 +8,8 @@ def test_create_valid_training_session() -> None:
         week=1,
         session_number=1,
         description="Lockerer Run-Walk-Lauf",
-        target_duration_minutes=30,
+        target_duration_min_minutes=30,
+        target_duration_max_minutes=35,
         run_interval_minutes=4,
         walk_interval_minutes=1,
         target_effort_min=3,
@@ -18,7 +19,8 @@ def test_create_valid_training_session() -> None:
     assert session.week == 1
     assert session.session_number == 1
     assert session.description == "Lockerer Run-Walk-Lauf"
-    assert session.target_duration_minutes == 30
+    assert session.target_duration_min_minutes == 30
+    assert session.target_duration_max_minutes == 35
     assert session.run_interval_minutes == 4
     assert session.walk_interval_minutes == 1
     assert session.target_effort_min == 3
@@ -31,11 +33,59 @@ def test_optional_training_session() -> None:
         week=1,
         session_number=3,
         description="Sehr lockerer Lauf",
-        target_duration_minutes=30,
+        target_duration_max_minutes=30,
         optional=True,
     )
 
     assert session.optional is True
+
+
+def test_duration_min_can_be_set_without_max() -> None:
+    session = TrainingSession(
+        week=1,
+        session_number=1,
+        description="Mindestens 30 Minuten",
+        target_duration_min_minutes=30,
+    )
+
+    assert session.target_duration_min_minutes == 30
+    assert session.target_duration_max_minutes is None
+
+
+def test_duration_max_can_be_set_without_min() -> None:
+    session = TrainingSession(
+        week=1,
+        session_number=1,
+        description="Maximal 30 Minuten",
+        target_duration_max_minutes=30,
+    )
+
+    assert session.target_duration_min_minutes is None
+    assert session.target_duration_max_minutes == 30
+
+
+def test_distance_min_can_be_set_without_max() -> None:
+    session = TrainingSession(
+        week=1,
+        session_number=1,
+        description="Mindestens 5 km",
+        target_distance_min_km=5.0,
+    )
+
+    assert session.target_distance_min_km == 5.0
+    assert session.target_distance_max_km is None
+
+
+def test_distance_max_can_be_set_without_min() -> None:
+    session = TrainingSession(
+        week=1,
+        session_number=1,
+        description="Maximal 5 km",
+        target_distance_max_km=5.0,
+    )
+
+    assert session.target_distance_min_km is None
+    assert session.target_distance_max_km == 5.0
 
 
 @pytest.mark.parametrize("week", [0, -1])
@@ -71,24 +121,76 @@ def test_description_cannot_be_empty(description: str) -> None:
 
 
 @pytest.mark.parametrize("duration", [0, -1])
-def test_target_duration_must_be_positive(duration: int) -> None:
+def test_target_duration_min_must_be_positive(
+    duration: int,
+) -> None:
     with pytest.raises(ValueError):
         TrainingSession(
             week=1,
             session_number=1,
             description="Test",
-            target_duration_minutes=duration,
+            target_duration_min_minutes=duration,
+        )
+
+
+@pytest.mark.parametrize("duration", [0, -1])
+def test_target_duration_max_must_be_positive(
+    duration: int,
+) -> None:
+    with pytest.raises(ValueError):
+        TrainingSession(
+            week=1,
+            session_number=1,
+            description="Test",
+            target_duration_max_minutes=duration,
+        )
+
+
+def test_target_duration_min_cannot_be_greater_than_max() -> None:
+    with pytest.raises(ValueError):
+        TrainingSession(
+            week=1,
+            session_number=1,
+            description="Test",
+            target_duration_min_minutes=40,
+            target_duration_max_minutes=30,
         )
 
 
 @pytest.mark.parametrize("distance", [0, -1.0])
-def test_target_distance_must_be_positive(distance: float) -> None:
+def test_target_distance_min_must_be_positive(
+    distance: float,
+) -> None:
     with pytest.raises(ValueError):
         TrainingSession(
             week=1,
             session_number=1,
             description="Test",
-            target_distance_km=distance,
+            target_distance_min_km=distance,
+        )
+
+
+@pytest.mark.parametrize("distance", [0, -1.0])
+def test_target_distance_max_must_be_positive(
+    distance: float,
+) -> None:
+    with pytest.raises(ValueError):
+        TrainingSession(
+            week=1,
+            session_number=1,
+            description="Test",
+            target_distance_max_km=distance,
+        )
+
+
+def test_target_distance_min_cannot_be_greater_than_max() -> None:
+    with pytest.raises(ValueError):
+        TrainingSession(
+            week=1,
+            session_number=1,
+            description="Test",
+            target_distance_min_km=6.0,
+            target_distance_max_km=5.0,
         )
 
 

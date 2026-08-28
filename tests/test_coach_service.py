@@ -19,7 +19,8 @@ def create_training_session() -> TrainingSession:
         week=1,
         session_number=1,
         description="Lockerer Run-Walk-Lauf",
-        target_duration_minutes=30,
+        target_duration_min_minutes=30,
+        target_duration_max_minutes=35,
         run_interval_minutes=4,
         walk_interval_minutes=1,
         target_effort_min=3,
@@ -133,5 +134,6 @@ def test_prompt_contains_training_session_data() -> None:
     assert "Woche: 1" in prompt
     assert "Einheit: 1" in prompt
     assert "Lockerer Run-Walk-Lauf" in prompt
-    assert "Zieldauer: 30 Minuten" in prompt
+    assert "Zieldauer Minimum: 30 Minuten" in prompt
+    assert "Zieldauer Maximum: 35 Minuten" in prompt
     assert "Zielbelastung: 3-4/10" in prompt

@@ -2,7 +2,6 @@ from pathlib import Path
 
 from running_coach.services.training_plan_service import TrainingPlanService
 from running_coach.model.run import Run
-from running_coach.model.training_session import TrainingSession
 from running_coach.services.coach_service import CoachService
 from running_coach.services.ollama_service import OllamaService
 
@@ -17,16 +16,16 @@ def main() -> None:
         walk_interval_minutes=1,
     )
 
+    project_root = Path(__file__).resolve().parents[2]
+
     training_plan_service = TrainingPlanService(
-        training_plan_path=Path("config/training_plan.json")
+        training_plan_path=project_root / "config" / "training_plan.json"
     )
 
     training_session = training_plan_service.get_session(
         week=1,
         session_number=1,
     )
-
-    print(training_session)
 
     ollama_service = OllamaService(
         model="gemma4:latest"

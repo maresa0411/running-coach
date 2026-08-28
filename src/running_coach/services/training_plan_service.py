@@ -28,11 +28,17 @@ class TrainingPlanService:
                     week=week,
                     session_number=session_data["session_number"],
                     description=session_data["description"],
-                    target_duration_minutes=session_data[
-                        "target_duration_minutes"
+                    target_duration_min_minutes=session_data[
+                        "target_duration_min_minutes"
                     ],
-                    target_distance_km=session_data[
-                        "target_distance_km"
+                    target_duration_max_minutes=session_data[
+                        "target_duration_max_minutes"
+                    ],
+                    target_distance_min_km=session_data[
+                        "target_distance_min_km"
+                    ],
+                    target_distance_max_km=session_data[
+                        "target_distance_max_km"
                     ],
                     run_interval_minutes=session_data[
                         "run_interval_minutes"
