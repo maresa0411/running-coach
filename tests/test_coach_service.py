@@ -1,4 +1,5 @@
 from running_coach.model.run import Run
+from running_coach.model.training_session import TrainingSession
 from running_coach.services.coach_service import CoachService
 from running_coach.services.llm_service import LLMService
 
@@ -11,6 +12,19 @@ class FakeOllamaService(LLMService):
     def generate(self, prompt: str) -> str:
         self.last_prompt = prompt
         return "Test feedback"
+
+
+def create_training_session() -> TrainingSession:
+    return TrainingSession(
+        week=1,
+        session_number=1,
+        description="Lockerer Run-Walk-Lauf",
+        target_duration_minutes=30,
+        run_interval_minutes=4,
+        walk_interval_minutes=1,
+        target_effort_min=3,
+        target_effort_max=4,
+    )
 
 
 def test_generate_feedback_returns_llm_response() -> None:
@@ -26,9 +40,15 @@ def test_generate_feedback_returns_llm_response() -> None:
         walk_interval_minutes=1,
     )
 
-    feedback = coach_service.generate_feedback(run)
+    training_session = create_training_session()
+
+    feedback = coach_service.generate_feedback(
+        run=run,
+        training_session=training_session,
+    )
 
     assert feedback == "Test feedback"
+
 
 def test_prompt_contains_run_data() -> None:
     fake_ollama = FakeOllamaService()
@@ -45,7 +65,12 @@ def test_prompt_contains_run_data() -> None:
         max_heart_rate=170,
     )
 
-    coach_service.generate_feedback(run)
+    training_session = create_training_session()
+
+    coach_service.generate_feedback(
+        run=run,
+        training_session=training_session,
+    )
 
     prompt = fake_ollama.last_prompt
 
@@ -53,9 +78,10 @@ def test_prompt_contains_run_data() -> None:
     assert "5.0 km" in prompt
     assert "42.0 Minuten" in prompt
     assert "4/10" in prompt
-    assert "8" in prompt
-    assert "145" in prompt
-    assert "170" in prompt
+    assert "Gehpausen: 8" in prompt
+    assert "Durchschnittspuls: 145" in prompt
+    assert "Maximalpuls: 170" in prompt
+
 
 def test_prompt_contains_run_walk_intervals() -> None:
     fake_ollama = FakeOllamaService()
@@ -70,10 +96,42 @@ def test_prompt_contains_run_walk_intervals() -> None:
         walk_interval_minutes=1,
     )
 
-    coach_service.generate_feedback(run)
+    training_session = create_training_session()
+
+    coach_service.generate_feedback(
+        run=run,
+        training_session=training_session,
+    )
 
     prompt = fake_ollama.last_prompt
 
     assert prompt is not None
-    assert "Laufintervall: 4" in prompt
-    assert "Gehintervall: 1" in prompt
+    assert "Laufintervall: 4 Minuten" in prompt
+    assert "Gehintervall: 1 Minuten" in prompt
+
+
+def test_prompt_contains_training_session_data() -> None:
+    fake_ollama = FakeOllamaService()
+    coach_service = CoachService(llm_service=fake_ollama)
+
+    run = Run(
+        distance_km=5.0,
+        duration_minutes=30.0,
+        perceived_effort=4,
+    )
+
+    training_session = create_training_session()
+
+    coach_service.generate_feedback(
+        run=run,
+        training_session=training_session,
+    )
+
+    prompt = fake_ollama.last_prompt
+
+    assert prompt is not None
+    assert "Woche: 1" in prompt
+    assert "Einheit: 1" in prompt
+    assert "Lockerer Run-Walk-Lauf" in prompt
+    assert "Zieldauer: 30 Minuten" in prompt
+    assert "Zielbelastung: 3-4/10" in prompt

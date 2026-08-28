@@ -1,0 +1,42 @@
+{
+  "weeks": [
+    {
+      "week": 1,
+      "sessions": [
+        {
+          "session_number": 1,
+          "description": "30 Minuten, 4 Minuten laufen / 1 Minute gehen",
+          "target_duration_minutes": 30,
+          "target_distance_km": null,
+          "run_interval_minutes": 4,
+          "walk_interval_minutes": 1,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 2,
+          "description": "5 km locker, Gehpausen nach Bedarf",
+          "target_duration_minutes": null,
+          "target_distance_km": 5.0,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": false
+        },
+        {
+          "session_number": 3,
+          "description": "25–30 Minuten sehr locker",
+          "target_duration_minutes": 30,
+          "target_distance_km": null,
+          "run_interval_minutes": null,
+          "walk_interval_minutes": null,
+          "target_effort_min": 3,
+          "target_effort_max": 4,
+          "optional": true
+        }
+      ]
+    }
+  ]
+}
