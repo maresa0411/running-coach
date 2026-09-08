@@ -46,6 +46,7 @@ def test_generate_feedback_returns_llm_response() -> None:
     feedback = coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     assert feedback == "Test feedback"
@@ -71,6 +72,7 @@ def test_prompt_contains_run_data() -> None:
     coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     prompt = fake_ollama.last_prompt
@@ -102,6 +104,7 @@ def test_prompt_contains_run_walk_intervals() -> None:
     coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     prompt = fake_ollama.last_prompt
@@ -126,6 +129,7 @@ def test_prompt_contains_training_session_data() -> None:
     coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     prompt = fake_ollama.last_prompt
@@ -160,6 +164,7 @@ def test_prompt_formats_exact_duration_target() -> None:
     coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     prompt = fake_ollama.last_prompt
@@ -188,6 +193,7 @@ def test_prompt_formats_minimum_duration_target() -> None:
     coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     prompt = fake_ollama.last_prompt
@@ -216,6 +222,7 @@ def test_prompt_formats_maximum_duration_target() -> None:
     coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     prompt = fake_ollama.last_prompt
@@ -245,6 +252,7 @@ def test_prompt_formats_distance_range() -> None:
     coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     prompt = fake_ollama.last_prompt
@@ -274,9 +282,82 @@ def test_prompt_formats_exact_distance_target() -> None:
     coach_service.generate_feedback(
         run=run,
         training_session=training_session,
+        previous_runs=[],
     )
 
     prompt = fake_ollama.last_prompt
 
     assert prompt is not None
     assert "Zieldistanz: 5.0 km" in prompt
+
+
+def test_prompt_contains_message_when_no_previous_runs() -> None:
+    fake_ollama = FakeOllamaService()
+    coach_service = CoachService(llm_service=fake_ollama)
+
+    run = Run(
+        distance_km=5.0,
+        duration_minutes=30.0,
+        perceived_effort=4,
+    )
+
+    training_session = create_training_session()
+
+    coach_service.generate_feedback(
+        run=run,
+        training_session=training_session,
+        previous_runs=[],
+    )
+
+    prompt = fake_ollama.last_prompt
+
+    assert prompt is not None
+    assert "Keine vorherigen Läufe vorhanden." in prompt
+
+def test_prompt_contains_only_last_three_previous_runs() -> None:
+    fake_ollama = FakeOllamaService()
+    coach_service = CoachService(llm_service=fake_ollama)
+
+    previous_runs = [
+        Run(
+            distance_km=1.1,
+            duration_minutes=10.0,
+            perceived_effort=7,
+        ),
+        Run(
+            distance_km=2.2,
+            duration_minutes=20.0,
+            perceived_effort=6,
+        ),
+        Run(
+            distance_km=3.3,
+            duration_minutes=30.0,
+            perceived_effort=5,
+        ),
+        Run(
+            distance_km=4.4,
+            duration_minutes=40.0,
+            perceived_effort=4,
+        ),
+    ]
+
+    current_run = Run(
+        distance_km=5.5,
+        duration_minutes=45.0,
+        perceived_effort=4,
+    )
+
+    coach_service.generate_feedback(
+        run=current_run,
+        training_session=create_training_session(),
+        previous_runs=previous_runs,
+    )
+
+    prompt = fake_ollama.last_prompt
+
+    assert prompt is not None
+
+    assert "1.1 km" not in prompt
+    assert "2.2 km" in prompt
+    assert "3.3 km" in prompt
+    assert "4.4 km" in prompt
