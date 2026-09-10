@@ -108,3 +108,57 @@ class TrainingPlanService:
             encoding="utf-8",
         ) as file:
             return json.load(file)
+
+    def get_sessions_for_week(
+            self,
+            week: int,
+    ) -> list[TrainingSession]:
+        data = self._load_training_plan()
+
+        for week_data in data["weeks"]:
+            if week_data["week"] != week:
+                continue
+
+            return [
+                TrainingSession(
+                    week=week,
+                    session_number=session_data[
+                        "session_number"
+                    ],
+                    description=session_data[
+                        "description"
+                    ],
+                    target_duration_min_minutes=session_data[
+                        "target_duration_min_minutes"
+                    ],
+                    target_duration_max_minutes=session_data[
+                        "target_duration_max_minutes"
+                    ],
+                    target_distance_min_km=session_data[
+                        "target_distance_min_km"
+                    ],
+                    target_distance_max_km=session_data[
+                        "target_distance_max_km"
+                    ],
+                    run_interval_minutes=session_data[
+                        "run_interval_minutes"
+                    ],
+                    walk_interval_minutes=session_data[
+                        "walk_interval_minutes"
+                    ],
+                    target_effort_min=session_data[
+                        "target_effort_min"
+                    ],
+                    target_effort_max=session_data[
+                        "target_effort_max"
+                    ],
+                    optional=session_data[
+                        "optional"
+                    ],
+                )
+                for session_data in week_data["sessions"]
+            ]
+
+        raise ValueError(
+            f"Training week not found: {week}"
+        )

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import discord
 from dotenv import load_dotenv
-from datetime import date
+from datetime import datetime
 
 from running_coach.services.coach_service import CoachService
 from running_coach.services.discord_service import DiscordService
@@ -74,6 +74,28 @@ async def main() -> None:
 
         user_id = message.author.id
         content = message.content.strip()
+
+        if content == "!plan":
+            now = datetime.now()
+
+            week = training_plan_service.get_week_for_datetime(
+                now
+            )
+
+            sessions = training_plan_service.get_sessions_for_week(
+                week=week
+            )
+
+            response = f"Trainingsplan Woche {week}:\n\n"
+
+            for session in sessions:
+                response += (
+                    f"Einheit {session.session_number}: "
+                    f"{session.description}\n"
+                )
+
+            await discord_service.send_message(recipient=channel_id, message=response)
+            return
 
         if content == "!run":
             response = workflow.start(user_id)

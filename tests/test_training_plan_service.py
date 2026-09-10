@@ -255,3 +255,50 @@ def test_get_week_for_datetime_rejects_date_after_plan(
         service.get_week_for_datetime(
             datetime(2026, 9, 21, 12, 0)
         )
+
+def test_get_sessions_for_week_returns_all_sessions(
+    tmp_path,
+) -> None:
+    service = create_service(tmp_path)
+
+    sessions = service.get_sessions_for_week(
+        week=1
+    )
+
+    assert len(sessions) == 2
+
+    assert sessions[0].week == 1
+    assert sessions[0].session_number == 1
+    assert sessions[0].description == "30 Minuten Run-Walk"
+
+    assert sessions[1].week == 1
+    assert sessions[1].session_number == 2
+    assert sessions[1].description == "5 km locker"
+
+def test_get_sessions_for_week_returns_sessions_from_correct_week(
+    tmp_path,
+) -> None:
+    service = create_service(tmp_path)
+
+    sessions = service.get_sessions_for_week(
+        week=2
+    )
+
+    assert len(sessions) == 1
+
+    assert sessions[0].week == 2
+    assert sessions[0].session_number == 1
+    assert sessions[0].description == "35 Minuten Run-Walk"
+
+def test_get_sessions_for_week_raises_error_when_week_not_found(
+    tmp_path,
+) -> None:
+    service = create_service(tmp_path)
+
+    with pytest.raises(
+        ValueError,
+        match="Training week not found",
+    ):
+        service.get_sessions_for_week(
+            week=99
+        )
