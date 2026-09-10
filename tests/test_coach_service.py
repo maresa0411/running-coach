@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from running_coach.model.run import Run
 from running_coach.model.training_session import TrainingSession
 from running_coach.services.coach_service import CoachService
@@ -33,6 +35,7 @@ def test_generate_feedback_returns_llm_response() -> None:
     coach_service = CoachService(llm_service=fake_ollama)
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=42.0,
         perceived_effort=4,
@@ -57,6 +60,7 @@ def test_prompt_contains_run_data() -> None:
     coach_service = CoachService(llm_service=fake_ollama)
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=42.0,
         perceived_effort=4,
@@ -91,6 +95,7 @@ def test_prompt_contains_run_walk_intervals() -> None:
     coach_service = CoachService(llm_service=fake_ollama)
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=42.0,
         perceived_effort=4,
@@ -119,6 +124,7 @@ def test_prompt_contains_training_session_data() -> None:
     coach_service = CoachService(llm_service=fake_ollama)
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=30.0,
         perceived_effort=4,
@@ -156,6 +162,7 @@ def test_prompt_formats_exact_duration_target() -> None:
     )
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=30.0,
         perceived_effort=4,
@@ -185,6 +192,7 @@ def test_prompt_formats_minimum_duration_target() -> None:
     )
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=30.0,
         perceived_effort=4,
@@ -214,6 +222,7 @@ def test_prompt_formats_maximum_duration_target() -> None:
     )
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=30.0,
         perceived_effort=4,
@@ -244,6 +253,7 @@ def test_prompt_formats_distance_range() -> None:
     )
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.2,
         duration_minutes=40.0,
         perceived_effort=4,
@@ -274,6 +284,7 @@ def test_prompt_formats_exact_distance_target() -> None:
     )
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=40.0,
         perceived_effort=4,
@@ -296,6 +307,7 @@ def test_prompt_contains_message_when_no_previous_runs() -> None:
     coach_service = CoachService(llm_service=fake_ollama)
 
     run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.0,
         duration_minutes=30.0,
         perceived_effort=4,
@@ -314,27 +326,32 @@ def test_prompt_contains_message_when_no_previous_runs() -> None:
     assert prompt is not None
     assert "Keine vorherigen Läufe vorhanden." in prompt
 
+
 def test_prompt_contains_only_last_three_previous_runs() -> None:
     fake_ollama = FakeOllamaService()
     coach_service = CoachService(llm_service=fake_ollama)
 
     previous_runs = [
         Run(
+            datetime=datetime(2026, 9, 1, 18, 0),
             distance_km=1.1,
             duration_minutes=10.0,
             perceived_effort=7,
         ),
         Run(
+            datetime=datetime(2026, 9, 3, 18, 0),
             distance_km=2.2,
             duration_minutes=20.0,
             perceived_effort=6,
         ),
         Run(
+            datetime=datetime(2026, 9, 5, 18, 0),
             distance_km=3.3,
             duration_minutes=30.0,
             perceived_effort=5,
         ),
         Run(
+            datetime=datetime(2026, 9, 7, 18, 0),
             distance_km=4.4,
             duration_minutes=40.0,
             perceived_effort=4,
@@ -342,6 +359,7 @@ def test_prompt_contains_only_last_three_previous_runs() -> None:
     ]
 
     current_run = Run(
+        datetime=datetime(2026, 9, 10, 18, 30),
         distance_km=5.5,
         duration_minutes=45.0,
         perceived_effort=4,

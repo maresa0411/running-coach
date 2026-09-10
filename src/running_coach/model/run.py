@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-
+from datetime import datetime
 
 @dataclass
 class Run:
+    datetime: datetime
     distance_km: float
     duration_minutes: float
     perceived_effort: int
@@ -12,7 +13,12 @@ class Run:
     average_heart_rate: int | None = None
     max_heart_rate: int | None = None
 
+
     def __post_init__(self) -> None:
+        if not isinstance(self.datetime, datetime):
+            raise ValueError(
+                "datetime must be a valid datetime object."
+            )
         if self.distance_km <= 0:
             raise ValueError("distance_km must be greater than 0.")
 

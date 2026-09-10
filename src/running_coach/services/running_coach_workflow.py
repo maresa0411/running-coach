@@ -1,6 +1,7 @@
 # src/running_coach/services/running_coach_workflow.py
 
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
 
 from running_coach.model.run import Run
@@ -286,6 +287,7 @@ class RunningCoachWorkflow:
 
         try:
             run = Run(
+                datetime=datetime.now(),
                 distance_km=data["distance_km"],
                 duration_minutes=data["duration_minutes"],
                 perceived_effort=data["perceived_effort"],

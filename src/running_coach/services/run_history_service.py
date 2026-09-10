@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 from running_coach.model.run import Run
@@ -21,6 +22,7 @@ class RunHistoryService:
 
         return [
             Run(
+                datetime=datetime.fromisoformat(run_data["datetime"]),
                 distance_km=run_data["distance_km"],
                 duration_minutes=run_data["duration_minutes"],
                 perceived_effort=run_data["perceived_effort"],
@@ -39,6 +41,7 @@ class RunHistoryService:
 
         data = [
             {
+                "datetime": stored_run.datetime.isoformat(),
                 "distance_km": stored_run.distance_km,
                 "duration_minutes": stored_run.duration_minutes,
                 "perceived_effort": stored_run.perceived_effort,
