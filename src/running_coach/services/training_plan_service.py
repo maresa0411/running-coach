@@ -1,13 +1,31 @@
 import json
-from pathlib import Path
+from datetime import date, datetime
 
 from running_coach.model.training_session import TrainingSession
+
+from datetime import date
+from pathlib import Path
 
 
 class TrainingPlanService:
 
-    def __init__(self, training_plan_path: Path) -> None:
+    def __init__(
+        self,
+        training_plan_path: Path,
+    ) -> None:
         self.training_plan_path = training_plan_path
+
+        data = self._load_training_plan()
+
+        self.start_date = date.fromisoformat(
+            data["start_date"]
+        )
+        self._number_of_weeks = len(data["weeks"])
+
+        if self.start_date.weekday() != 0:
+            raise ValueError(
+                "Training plan start date must be a Monday."
+            )
 
     def get_session(
         self,
@@ -59,6 +77,30 @@ class TrainingPlanService:
             f"Training session not found: "
             f"week={week}, session_number={session_number}"
         )
+
+    def get_week_for_datetime(
+            self,
+            run_datetime: datetime,
+    ) -> int:
+        run_date = run_datetime.date()
+
+        days_since_start = (
+                run_date - self.start_date
+        ).days
+
+        if days_since_start < 0:
+            raise ValueError(
+                "Run datetime is before training plan start date."
+            )
+
+        week = days_since_start // 7 + 1
+
+        if week > self._number_of_weeks:
+            raise ValueError(
+                "Run datetime is after training plan end date."
+            )
+
+        return week
 
     def _load_training_plan(self) -> dict:
         with self.training_plan_path.open(

@@ -4,6 +4,7 @@ from pathlib import Path
 
 import discord
 from dotenv import load_dotenv
+from datetime import date
 
 from running_coach.services.coach_service import CoachService
 from running_coach.services.discord_service import DiscordService
@@ -14,7 +15,6 @@ from running_coach.services.running_coach_workflow import (
     RunningCoachWorkflow,
 )
 from running_coach.services.training_plan_service import TrainingPlanService
-
 
 async def main() -> None:
     load_dotenv()
@@ -94,11 +94,13 @@ async def main() -> None:
             run = result.run
             session_number = result.session_number
 
-            training_session = (
-                training_plan_service.get_session(
-                    week=1,
-                    session_number=session_number,
-                )
+            week = training_plan_service.get_week_for_datetime(
+                run.datetime
+            )
+
+            training_session = training_plan_service.get_session(
+                week=week,
+                session_number=session_number,
             )
 
             previous_runs = run_history_service.get_runs()
