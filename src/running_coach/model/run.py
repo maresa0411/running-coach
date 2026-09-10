@@ -59,13 +59,6 @@ class Run:
                 "walk_interval_minutes must be greater than 0."
             )
 
-        has_intervals = has_run_interval and has_walk_interval
-        has_walk_breaks = self.walk_breaks is not None and self.walk_breaks > 0
-
-        if has_intervals and not has_walk_breaks:
-            raise ValueError(
-                "Run-walk intervals can only be set when walk_breaks is greater than 0."
-            )
 
     @property
     def pace_minutes_per_km(self) -> float:

@@ -140,18 +140,6 @@ def test_intervals_must_be_set_together(
             walk_interval_minutes=walk_interval,
         )
 
-
-def test_intervals_require_walk_breaks() -> None:
-    with pytest.raises(ValueError):
-        Run(
-            distance_km=5.0,
-            duration_minutes=40.0,
-            perceived_effort=4,
-            run_interval_minutes=4,
-            walk_interval_minutes=1,
-        )
-
-
 @pytest.mark.parametrize(
     ("run_interval", "walk_interval"),
     [
