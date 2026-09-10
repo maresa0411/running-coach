@@ -34,7 +34,7 @@ async def main() -> None:
     )
 
     ollama_service = OllamaService(
-        model="gemma4:latest"
+        model=os.getenv("OLLAMA_MODEL")
     )
 
     coach_service = CoachService(
