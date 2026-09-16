@@ -7,3 +7,5 @@ data/
 __pycache__/
 *.py[cod]
 *.egg-info/
+/start_running_coach.bat
+/config/

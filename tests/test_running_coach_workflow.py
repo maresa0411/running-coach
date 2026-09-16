@@ -1,3 +1,5 @@
+import pytest
+
 from running_coach.services.running_coach_workflow import (
     CompletedRunInput,
     RunningCoachWorkflow,
@@ -13,7 +15,7 @@ def start_until_effort(
     workflow.start(USER_ID)
     workflow.handle_message(USER_ID, "1")
     workflow.handle_message(USER_ID, "5.0")
-    workflow.handle_message(USER_ID, "32")
+    workflow.handle_message(USER_ID, "32:00")
 
 
 def complete_run(
@@ -22,7 +24,7 @@ def complete_run(
     workflow.start(USER_ID)
     workflow.handle_message(USER_ID, "1")
     workflow.handle_message(USER_ID, "5.0")
-    workflow.handle_message(USER_ID, "32")
+    workflow.handle_message(USER_ID, "32:00")
     workflow.handle_message(USER_ID, "4")
     workflow.handle_message(USER_ID, "6")
     workflow.handle_message(USER_ID, "4")
@@ -81,7 +83,7 @@ def test_distance_accepts_comma() -> None:
     )
 
     assert response == (
-        "Wie lange hat der Lauf gedauert? Bitte in Minuten."
+        "Wie lange hat der Lauf gedauert? Bitte im Format Minuten:Sekunden."
     )
 
     assert workflow.run_data[USER_ID]["distance_km"] == 5.2
@@ -114,6 +116,98 @@ def test_zero_distance_is_rejected() -> None:
 
     assert response == (
         "Die Distanz muss größer als 0 sein."
+    )
+
+
+def test_duration_accepts_minutes_and_seconds() -> None:
+    workflow = RunningCoachWorkflow()
+
+    workflow.start(USER_ID)
+    workflow.handle_message(USER_ID, "1")
+    workflow.handle_message(USER_ID, "5.0")
+
+    response = workflow.handle_message(
+        USER_ID,
+        "34:28",
+    )
+
+    assert response == (
+        "Wie anstrengend war der Lauf von 1–10?"
+    )
+
+    assert workflow.run_data[USER_ID][
+        "duration_minutes"
+    ] == pytest.approx(
+        34 + 28 / 60
+    )
+
+
+def test_duration_accepts_zero_seconds() -> None:
+    workflow = RunningCoachWorkflow()
+
+    workflow.start(USER_ID)
+    workflow.handle_message(USER_ID, "1")
+    workflow.handle_message(USER_ID, "5.0")
+
+    workflow.handle_message(
+        USER_ID,
+        "32:00",
+    )
+
+    assert workflow.run_data[USER_ID][
+        "duration_minutes"
+    ] == 32.0
+
+
+def test_invalid_duration_format_is_rejected() -> None:
+    workflow = RunningCoachWorkflow()
+
+    workflow.start(USER_ID)
+    workflow.handle_message(USER_ID, "1")
+    workflow.handle_message(USER_ID, "5.0")
+
+    response = workflow.handle_message(
+        USER_ID,
+        "32",
+    )
+
+    assert response == (
+        "Bitte gib die Dauer im Format Minuten:Sekunden an."
+    )
+
+
+def test_invalid_duration_seconds_are_rejected() -> None:
+    workflow = RunningCoachWorkflow()
+
+    workflow.start(USER_ID)
+    workflow.handle_message(USER_ID, "1")
+    workflow.handle_message(USER_ID, "5.0")
+
+    response = workflow.handle_message(
+        USER_ID,
+        "32:60",
+    )
+
+    assert response == (
+        "Bitte gib eine gültige Dauer im Format "
+        "Minuten:Sekunden an."
+    )
+
+
+def test_zero_duration_is_rejected() -> None:
+    workflow = RunningCoachWorkflow()
+
+    workflow.start(USER_ID)
+    workflow.handle_message(USER_ID, "1")
+    workflow.handle_message(USER_ID, "5.0")
+
+    response = workflow.handle_message(
+        USER_ID,
+        "0:00",
+    )
+
+    assert response == (
+        "Die Dauer muss größer als 0 sein."
     )
 
 
@@ -188,7 +282,7 @@ def test_average_heart_rate_must_not_exceed_max() -> None:
     workflow.start(USER_ID)
     workflow.handle_message(USER_ID, "1")
     workflow.handle_message(USER_ID, "5")
-    workflow.handle_message(USER_ID, "32")
+    workflow.handle_message(USER_ID, "32:00")
     workflow.handle_message(USER_ID, "4")
     workflow.handle_message(USER_ID, "6")
     workflow.handle_message(USER_ID, "4")
@@ -239,7 +333,7 @@ def test_optional_fields_can_all_be_none() -> None:
     workflow.start(USER_ID)
     workflow.handle_message(USER_ID, "2")
     workflow.handle_message(USER_ID, "5")
-    workflow.handle_message(USER_ID, "35")
+    workflow.handle_message(USER_ID, "35:00")
     workflow.handle_message(USER_ID, "3")
     workflow.handle_message(USER_ID, "-")
     workflow.handle_message(USER_ID, "-")

@@ -111,17 +111,24 @@ class RunningCoachWorkflow:
         self.run_data[user_id]["distance_km"] = distance
         self.states[user_id] = ConversationState.WAITING_FOR_DURATION
 
-        return "Wie lange hat der Lauf gedauert? Bitte in Minuten."
+        return "Wie lange hat der Lauf gedauert? Bitte im Format Minuten:Sekunden."
 
     def _handle_duration(
-        self,
-        user_id: int,
-        message: str,
+            self,
+            user_id: int,
+            message: str,
     ) -> str:
         try:
-            duration = float(message.replace(",", "."))
+            minutes_text, seconds_text = message.split(":")
+            minutes = int(minutes_text)
+            seconds = int(seconds_text)
         except ValueError:
-            return "Bitte gib die Dauer als Zahl an."
+            return "Bitte gib die Dauer im Format Minuten:Sekunden an."
+
+        if minutes < 0 or not 0 <= seconds <= 59:
+            return "Bitte gib eine gültige Dauer im Format Minuten:Sekunden an."
+
+        duration = minutes + seconds / 60
 
         if duration <= 0:
             return "Die Dauer muss größer als 0 sein."
