@@ -4,9 +4,11 @@ version = "0.1.0"
 description = "A local AI running coach using Ollama and Discord."
 requires-python = ">=3.12"
 
-dependencies = []
+dependencies = [
+    "ollama",  "python-dotenv", "openai", "discord.py"
+]
 
 [project.optional-dependencies]
 dev = [
-    "pytest",  "pytest-asyncio", "ollama",  "python-dotenv", "discord.py"
+    "pytest",  "pytest-asyncio"
 ]

@@ -6,6 +6,7 @@ import discord
 from dotenv import load_dotenv
 from datetime import datetime
 
+from running_coach.services.api_llm_service import ApiLLMService
 from running_coach.services.coach_service import CoachService
 from running_coach.services.discord_service import DiscordService
 from running_coach.services.ollama_service import OllamaService
@@ -33,12 +34,14 @@ async def main() -> None:
         / "runs.json"
     )
 
-    ollama_service = OllamaService(
-        model=os.getenv("OLLAMA_MODEL")
+    #llm_service = OllamaService(model=os.getenv("OLLAMA_MODEL"))
+
+    llm_service = ApiLLMService(
+        model=os.getenv("OPENAI_MODEL")
     )
 
     coach_service = CoachService(
-        llm_service=ollama_service
+        llm_service=llm_service
     )
 
     workflow = RunningCoachWorkflow()

@@ -1,5 +1,3 @@
-# src/running_coach/services/running_coach_workflow.py
-
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
