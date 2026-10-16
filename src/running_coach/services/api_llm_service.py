@@ -10,13 +10,10 @@ class ApiLLMService(LLMService):
 
     def __init__(self, model: str) -> None:
         self.model = model
+        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     def generate(self, prompt: str) -> str:
-        load_dotenv()
-
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-        response = client.responses.create(
+        response = self.client.responses.create(
             model = self.model,
             input = prompt
         )
