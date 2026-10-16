@@ -2,14 +2,10 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY pyproject.toml .
-
-RUN pip install --no-cache-dir .
+ENV PYTHONUNBUFFERED=1
 
 COPY . .
 
-CMD ["python", "main.py"]
+RUN pip install --no-cache-dir -e .
+
+CMD ["python", "-m", "running_coach.main"]
