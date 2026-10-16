@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 from pathlib import Path
 
@@ -19,6 +20,7 @@ from running_coach.services.training_plan_service import TrainingPlanService
 
 async def main() -> None:
     load_dotenv()
+    logging.basicConfig(level=logging.INFO)
 
     project_root = Path(__file__).resolve().parents[2]
 
@@ -133,12 +135,14 @@ async def main() -> None:
             await discord_service.send_message(recipient=channel_id, message="Lauf vollständig erfasst. "
                 "Ich erstelle dein Feedback...")
 
-            feedback = await asyncio.to_thread(
-                coach_service.generate_feedback,
-                run,
-                training_session,
-                previous_runs,
-            )
+            try:
+                feedback = await asyncio.to_thread(
+                    coach_service.generate_feedback, run, training_session, previous_runs
+                )
+            except Exception as e:
+                logging.exception("generate_feedback fehlgeschlagen")
+                await discord_service.send_message(recipient=channel_id, message=f"Feedback fehlgeschlagen: {e}")
+                return
 
             await discord_service.send_message(recipient=channel_id, message=feedback)
 
