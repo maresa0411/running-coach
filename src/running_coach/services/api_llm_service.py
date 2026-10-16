@@ -21,4 +21,4 @@ class ApiLLMService(LLMService):
             input = prompt
         )
 
-        return response.message
+        return response.output_text
